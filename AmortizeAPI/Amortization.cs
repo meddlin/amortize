@@ -9,17 +9,66 @@ namespace AmortizeAPI
     {
         public List<AmortizedPart> AmortizationTable { get; set; }
 
-        public decimal SalePrice { get; set; }
-        public decimal DownPayment { get; set; }
-        public decimal InterestRate { get; set; }
+        public double SalePrice { get; set; }
+        public double DownPayment { get; set; }
+        public double StartingPrincipal { get; set; }
+        public double AnnualInterestRate { get; set; }
+        public double MonthlyInterestRate { get; set; }
 
         public int NumberOfPayments { get; set; } // term
 
-        public decimal HomeInsurance { get; set; }
-        public decimal PropertyTax { get; set; }
-        public decimal MortgageInsurance { get; set; }
+        public double HomeInsurance { get; set; }
+        public double PropertyTax { get; set; }
+        public double MortgageInsurance { get; set; }
 
-        public decimal ExtraPayment { get; set; }
+        public double ExtraPayment { get; set; }
+
+
+        public Amortization(double salePrice, double downPayment, int mortgageYears, double interestRate)
+        {
+            SalePrice = salePrice;
+            DownPayment = downPayment;
+            StartingPrincipal = salePrice - downPayment;
+
+            AnnualInterestRate = interestRate;
+            MonthlyInterestRate = interestRate / 12;
+
+            NumberOfPayments = mortgageYears * 12;
+        }
+
+        public Amortization(double salePrice, double downPayment, int mortgageYears, double interestRate, double homeIns, double propTax, double mortIns)
+        {
+            SalePrice = salePrice;
+            DownPayment = downPayment;
+            StartingPrincipal = salePrice - downPayment;
+
+            AnnualInterestRate = interestRate;
+            MonthlyInterestRate = interestRate / 12;
+
+            NumberOfPayments = mortgageYears * 12;
+
+            HomeInsurance = homeIns;
+            PropertyTax = propTax;
+            MortgageInsurance = mortIns;
+        }
+
+        public Amortization(double salePrice, double downPayment, int mortgageYears, double interestRate, double homeIns, double propTax, double mortIns, double extra)
+        {
+            SalePrice = salePrice;
+            DownPayment = downPayment;
+            StartingPrincipal = salePrice - downPayment;
+
+            AnnualInterestRate = interestRate;
+            MonthlyInterestRate = interestRate / 12;
+
+            NumberOfPayments = mortgageYears * 12;
+
+            HomeInsurance = homeIns;
+            PropertyTax = propTax;
+            MortgageInsurance = mortIns;
+
+            ExtraPayment = extra;
+        }
 
         /// <summary>
         /// Determine the 
@@ -28,17 +77,17 @@ namespace AmortizeAPI
         public List<AmortizedPart> FindAmortizedPayments()
         {
             AmortizationTable = new List<AmortizedPart>();
-            double remainingPrincipal = 477000.0;
+            double remainingPrincipal = StartingPrincipal;
             int termCounter = 1;
 
-            double extraMonthlyPayment = 200.0 + 500.0 + 900.0 + 1200.0; // budget + retirement + rent + bonus
+            // double extraMonthlyPayment = 200.0 + 500.0 + 900.0 + 1200.0; // budget + retirement + rent + bonus
 
             for (var term = 360; term > 0; term--)
             {
-                var basePay = FindMonthlyMortgageBase(0.003020833333, term, remainingPrincipal);
-                var monthlyPayment = FindMonthlyPayment(basePay, mortIns: 353.78, propertyTax: 458.0, homeInsurance: 116.83, extraMonthlyPayment);
+                var basePay = FindMonthlyMortgageBase(MonthlyInterestRate, term, remainingPrincipal);
+                var monthlyPayment = FindMonthlyPayment(basePay, MortgageInsurance, PropertyTax, HomeInsurance, ExtraPayment);
 
-                (double p, double i) = CalculatePrincipalInterest((basePay + extraMonthlyPayment), 0.003020833333, remainingPrincipal, termCounter);
+                (double p, double i) = CalculatePrincipalInterest((basePay + ExtraPayment), MonthlyInterestRate, remainingPrincipal, termCounter);
 
                 remainingPrincipal = remainingPrincipal - p;
                 AmortizationTable.Add(new AmortizedPart() { 
@@ -47,7 +96,7 @@ namespace AmortizeAPI
                     Principal = p, 
                     Interest = i, 
                     RemainingPrincipal = remainingPrincipal,
-                    ExtraPayment = extraMonthlyPayment
+                    ExtraPayment = ExtraPayment
                 });
 
                 termCounter++;
@@ -90,6 +139,14 @@ namespace AmortizeAPI
             return p * (numerator / denominator);
         }
 
+        /// <summary>
+        /// Calculate separate principal and interest pieces of a single payment.
+        /// </summary>
+        /// <param name="monthlyBasePayment"></param>
+        /// <param name="monthlyInterest"></param>
+        /// <param name="remainingPrincipal"></param>
+        /// <param name="specificTerm">The specific term of the loan to calculate for</param>
+        /// <returns></returns>
         public (double, double) CalculatePrincipalInterest(double monthlyBasePayment, double monthlyInterest, double remainingPrincipal, int specificTerm)
         {
             double principal = (monthlyBasePayment - monthlyInterest * remainingPrincipal) * Math.Pow((1 + monthlyInterest), (specificTerm - 1));
@@ -98,10 +155,17 @@ namespace AmortizeAPI
             return (principal, interest);
         }
 
+        /// <summary>
+        /// Total combined monthly payment of mortgage, escrow items, and extra principal payments.
+        /// </summary>
+        /// <param name="principalInt"></param>
+        /// <param name="mortIns"></param>
+        /// <param name="propertyTax"></param>
+        /// <param name="homeInsurance"></param>
+        /// <param name="extraPrincipalPayment"></param>
+        /// <returns></returns>
         public double FindMonthlyPayment(double principalInt, double mortIns, double propertyTax, double homeInsurance, double extraPrincipalPayment)
         {
-            // TODO : return "principal + interest" separate from "escrow items"
-
             return principalInt + mortIns + propertyTax + homeInsurance + extraPrincipalPayment;
         }
     }
