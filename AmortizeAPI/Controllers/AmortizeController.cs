@@ -40,5 +40,12 @@ namespace AmortizeAPI.Controllers
 
             return test;
         }
+
+        [HttpPost]
+        public double MortgageInsuranceRolloff([FromBody] CalculationRequest request)
+        {
+            var amo = new Amortization(request);
+            return amo.MortgageInsuranceRolloffAmount();
+        }
     }
 }

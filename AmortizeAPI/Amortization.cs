@@ -75,8 +75,13 @@ namespace AmortizeAPI
         {
             SalePrice = request.SalePrice;
             DownPayment = request.DownPayment;
-            NumberOfPayments = request.MortgageDuration;
+            StartingPrincipal = request.SalePrice - request.DownPayment;
+
+            NumberOfPayments = request.MortgageDuration * 12;
+
             AnnualInterestRate = request.InterestRate;
+            MonthlyInterestRate = request.InterestRate / 12;
+
             HomeInsurance = request.HomeInsurance;
             PropertyTax = request.PropertyTax;
             MortgageInsurance = request.MortgageInsurance;
@@ -87,13 +92,11 @@ namespace AmortizeAPI
         /// Determine the 
         /// </summary>
         /// <returns></returns>
-        public List<Models.AmortizedPart> FindAmortizedPayments()
+        public List<AmortizedPart> FindAmortizedPayments()
         {
-            AmortizationTable = new List<Models.AmortizedPart>();
+            AmortizationTable = new List<AmortizedPart>();
             double remainingPrincipal = StartingPrincipal;
             int termCounter = 1;
-
-            // double extraMonthlyPayment = 200.0 + 500.0 + 900.0 + 1200.0; // budget + retirement + rent + bonus
 
             for (var term = 360; term > 0; term--)
             {
@@ -103,7 +106,7 @@ namespace AmortizeAPI
                 (double p, double i) = CalculatePrincipalInterest((basePay + ExtraPayment), MonthlyInterestRate, remainingPrincipal, termCounter);
 
                 remainingPrincipal = remainingPrincipal - p;
-                AmortizationTable.Add(new Models.AmortizedPart() { 
+                AmortizationTable.Add(new AmortizedPart() { 
                     Term = termCounter, 
                     MonthlyPayment = monthlyPayment, 
                     Principal = p, 
@@ -180,6 +183,15 @@ namespace AmortizeAPI
         public double FindMonthlyPayment(double principalInt, double mortIns, double propertyTax, double homeInsurance, double extraPrincipalPayment)
         {
             return principalInt + mortIns + propertyTax + homeInsurance + extraPrincipalPayment;
+        }
+
+        /// <summary>
+        /// Calculate the principal amount when mortgage insurance will roll off.
+        /// </summary>
+        /// <returns></returns>
+        public double MortgageInsuranceRolloffAmount()
+        {
+            return StartingPrincipal * 0.78;
         }
     }
 }
