@@ -12,5 +12,6 @@ namespace AmortizeAPI
         public double Principal { get; set; }
         public double Interest { get; set; }
         public double RemainingPrincipal { get; set; }
+        public double ExtraPayment { get; set; }
     }
 }

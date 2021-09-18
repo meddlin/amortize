@@ -35,7 +35,7 @@ namespace AmortizeAPI.Controllers
         {
             var amo = new Amortization();
             var basePay = amo.FindMonthlyMortgageBase(0.003020833333, 360, 477000.0);
-            var test = amo.FindMonthlyPayment(basePay, 353.78, 458.0, 116.83);
+            var test = amo.FindMonthlyPayment(basePay, 353.78, 458.0, 116.83, 0.0);
 
             return test;
         }

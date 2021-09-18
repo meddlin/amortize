@@ -31,15 +31,25 @@ namespace AmortizeAPI
             double remainingPrincipal = 477000.0;
             int termCounter = 1;
 
+            double extraMonthlyPayment = 200.0 + 500.0 + 900.0 + 1200.0; // budget + retirement + rent + bonus
+
             for (var term = 360; term > 0; term--)
             {
                 var basePay = FindMonthlyMortgageBase(0.003020833333, term, remainingPrincipal);
-                var monthlyPayment = FindMonthlyPayment(basePay, mortIns: 353.78, propertyTax: 458.0, homeInsurance: 116.83);
+                var monthlyPayment = FindMonthlyPayment(basePay, mortIns: 353.78, propertyTax: 458.0, homeInsurance: 116.83, extraMonthlyPayment);
 
-                (double p, double i) = CalculatePrincipalInterest(basePay, 0.003020833333, remainingPrincipal, termCounter);
+                (double p, double i) = CalculatePrincipalInterest((basePay + extraMonthlyPayment), 0.003020833333, remainingPrincipal, termCounter);
 
                 remainingPrincipal = remainingPrincipal - p;
-                AmortizationTable.Add(new AmortizedPart() { Term = termCounter, MonthlyPayment = monthlyPayment, Principal = p, Interest = i, RemainingPrincipal = remainingPrincipal });
+                AmortizationTable.Add(new AmortizedPart() { 
+                    Term = termCounter, 
+                    MonthlyPayment = monthlyPayment, 
+                    Principal = p, 
+                    Interest = i, 
+                    RemainingPrincipal = remainingPrincipal,
+                    ExtraPayment = extraMonthlyPayment
+                });
+
                 termCounter++;
             }
 
@@ -88,11 +98,11 @@ namespace AmortizeAPI
             return (principal, interest);
         }
 
-        public double FindMonthlyPayment(double principalInt, double mortIns, double propertyTax, double homeInsurance)
+        public double FindMonthlyPayment(double principalInt, double mortIns, double propertyTax, double homeInsurance, double extraPrincipalPayment)
         {
             // TODO : return "principal + interest" separate from "escrow items"
 
-            return principalInt + mortIns + propertyTax + homeInsurance;
+            return principalInt + mortIns + propertyTax + homeInsurance + extraPrincipalPayment;
         }
     }
 }
