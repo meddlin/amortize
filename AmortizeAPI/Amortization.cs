@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AmortizeAPI.Models;
 
 namespace AmortizeAPI
 {
@@ -70,13 +71,25 @@ namespace AmortizeAPI
             ExtraPayment = extra;
         }
 
+        public Amortization(CalculationRequest request)
+        {
+            SalePrice = request.SalePrice;
+            DownPayment = request.DownPayment;
+            NumberOfPayments = request.MortgageDuration;
+            AnnualInterestRate = request.InterestRate;
+            HomeInsurance = request.HomeInsurance;
+            PropertyTax = request.PropertyTax;
+            MortgageInsurance = request.MortgageInsurance;
+            ExtraPayment = request.ExtraMonthlyPayment;
+        }
+
         /// <summary>
         /// Determine the 
         /// </summary>
         /// <returns></returns>
-        public List<AmortizedPart> FindAmortizedPayments()
+        public List<Models.AmortizedPart> FindAmortizedPayments()
         {
-            AmortizationTable = new List<AmortizedPart>();
+            AmortizationTable = new List<Models.AmortizedPart>();
             double remainingPrincipal = StartingPrincipal;
             int termCounter = 1;
 
@@ -90,7 +103,7 @@ namespace AmortizeAPI
                 (double p, double i) = CalculatePrincipalInterest((basePay + ExtraPayment), MonthlyInterestRate, remainingPrincipal, termCounter);
 
                 remainingPrincipal = remainingPrincipal - p;
-                AmortizationTable.Add(new AmortizedPart() { 
+                AmortizationTable.Add(new Models.AmortizedPart() { 
                     Term = termCounter, 
                     MonthlyPayment = monthlyPayment, 
                     Principal = p, 
