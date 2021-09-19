@@ -89,7 +89,7 @@ namespace AmortizeAPI
         }
 
         /// <summary>
-        /// Determine the 
+        /// Calculate the series of payments for the amortization table
         /// </summary>
         /// <returns></returns>
         public List<AmortizedPart> FindAmortizedPayments()
@@ -98,7 +98,7 @@ namespace AmortizeAPI
             double remainingPrincipal = StartingPrincipal;
             int termCounter = 1;
 
-            for (var term = 360; term > 0; term--)
+            for (var term = NumberOfPayments; term > 0; term--)
             {
                 var basePay = FindMonthlyMortgageBase(MonthlyInterestRate, term, remainingPrincipal);
                 var monthlyPayment = FindMonthlyPayment(basePay, MortgageInsurance, PropertyTax, HomeInsurance, ExtraPayment);
@@ -106,6 +106,10 @@ namespace AmortizeAPI
                 (double p, double i) = CalculatePrincipalInterest((basePay + ExtraPayment), MonthlyInterestRate, remainingPrincipal, termCounter);
 
                 remainingPrincipal = remainingPrincipal - p;
+
+                // break loop if balance is paid off sooner
+                if (remainingPrincipal < 0) break;
+
                 AmortizationTable.Add(new AmortizedPart() { 
                     Term = termCounter, 
                     MonthlyPayment = monthlyPayment, 
