@@ -85,27 +85,43 @@ function App() {
     <div className="App wrapper">
       {submitting && <div>Submitting form...</div>}
       <form onSubmit={handleSubmit}>
-        <fieldset disabled={submitting}>
-          <label>
-            <p>Sale Price</p>
-            <input name="salePrice" onChange={handleChange} value={formData.salePrice || ''} />
-          </label>
-          <label>
-            <p>Down Payment</p>
-            <input name="downPayment" onChange={handleChange} value={formData.downPayment || ''} />
-          </label>
-          <label>
-            <p>Mortgage Duration (yrs)</p>
-            <input name="mortgageDuration" onChange={handleChange} value={formData.mortgageDuration || ''} />
-          </label>
-          <label>
-            <p>Interest Rate (annual)</p>
-            <input name="interestRate" onChange={handleChange} value={formData.interestRate || ''} />
-          </label>
-          <label>
-            <p>Extra Monthly Payment</p>
-            <input name="extraMonthlyPayment" onChange={handleChange} value={formData.extraMonthlyPayment || ''} />
-          </label>
+        <fieldset disabled={submitting} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div>
+            <label>
+              <p>Sale Price</p>
+              <input name="salePrice" onChange={handleChange} value={formData.salePrice || ''} />
+            </label>
+            <label>
+              <p>Down Payment</p>
+              <input name="downPayment" onChange={handleChange} value={formData.downPayment || ''} />
+            </label>
+            <label>
+              <p>Mortgage Duration (yrs)</p>
+              <input name="mortgageDuration" onChange={handleChange} value={formData.mortgageDuration || ''} />
+            </label>
+            <label>
+              <p>Interest Rate (annual)</p>
+              <input name="interestRate" onChange={handleChange} value={formData.interestRate || ''} />
+            </label>
+          </div>
+          <div>
+            <label>
+              <p>Home Insurance</p>
+              <input name="homeInsurance" onChange={handleChange} value={formData.homeInsurance || ''} />
+            </label>
+            <label>
+              <p>Property Tax</p>
+              <input name="propertyTax" onChange={handleChange} value={formData.propertyTax || ''} />
+            </label>
+            <label>
+              <p>Mortgage Insurance</p>
+              <input name="mortgageInsurance" onChange={handleChange} value={formData.mortgageInsurance || ''} />
+            </label>
+            <label>
+              <p>Extra Monthly Payment</p>
+              <input name="extraMonthlyPayment" onChange={handleChange} value={formData.extraMonthlyPayment || ''} />
+            </label>
+          </div>
         </fieldset>
 
         <button type="submit" disabled={submitting}>Submit</button>
