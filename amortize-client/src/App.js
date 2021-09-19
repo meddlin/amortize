@@ -25,7 +25,8 @@ function App() {
   const [formData, setFormData] = useReducer(formReducer, {});
   
   useEffect(() => {
-    fetch("https://localhost:44353/Amortize/CalculateAmortizationTable", 
+    // fetch("https://localhost:44353/Amortize/CalculateAmortizationTable", 
+    fetch("https://localhost:5000/Amortize/CalculateAmortizationTable", 
       {
         headers: {
           'Accept': 'application/json',
