@@ -9,6 +9,8 @@ While looking for a simple amortization table online, I couldn't find one that i
 - Extra principal payments
 - _Show the change in payments as PMI rolls off the loan_
 
+_**Docs can be found here:**_ https://meddlin.github.io/amortize/
+
 
 ## Tech Stack
 
