@@ -1,5 +1,9 @@
 ## Welcome to GitHub Pages
 
+### Table of Contents
+
+- [frontend - forms](https://github.com/meddlin/amortize/frontend/forms)
+
 You can use the [editor on GitHub](https://github.com/meddlin/amortize/edit/master/docs/index.md) to maintain and preview the content for your website in Markdown files.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
