@@ -2,6 +2,7 @@
 layout: page
 title: Deployment - Frontend
 permalink: /deployment/frontend
+filename: frontend.md
 ---
 
 ## Create Dockerfile
