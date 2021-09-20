@@ -41,6 +41,14 @@ CMD ASPNETCORE_URLS=http://*:$PORT dotnet AmortizeAPI.dll
 > for use with Heroku. If deploying elsewhere, you may need to comment this line and use the
 > `ENTRYPOINT ["dotnet", "AmortizeAPI.dll"]`
 
+## (Optional) Run Container Locally
+
+Build image: `docker build -t YourAppName .` (_Don't foget the period at the end!_)
+
+Run container: `docker run -d -p 8080:80 --name abc YourAppName`
+
+Ref: [https://dev.to/alrobilliard/deploying-net-core-to-heroku-1lfe](https://dev.to/alrobilliard/deploying-net-core-to-heroku-1lfe)
+
 ## Push to Heroku
 
 After creating the `Dockerfile`, we can now build the image (test locally if you want), and push it to Heroku.

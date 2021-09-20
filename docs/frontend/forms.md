@@ -4,4 +4,4 @@ title: React - Forms
 permalink: /frontend/forms
 ---
 
-Ref: https://www.digitalocean.com/community/tutorials/how-to-build-forms-in-react
+Ref: [https://www.digitalocean.com/community/tutorials/how-to-build-forms-in-react](https://www.digitalocean.com/community/tutorials/how-to-build-forms-in-react)
