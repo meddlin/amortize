@@ -13,9 +13,11 @@ const formReducer = (state, event) => {
     }
   }
 
+
+
   return {
     ...state,
-    [event.name]: event.value
+    [event.name]: (event.name === 'interestRate' && event.value.length <= 3) ? event.value : parseFloat(event.value)
   }
 }
 
@@ -25,8 +27,14 @@ function App() {
   const [formData, setFormData] = useReducer(formReducer, {});
   
   useEffect(() => {
-    // fetch("https://localhost:44353/Amortize/CalculateAmortizationTable", 
-    fetch("https://localhost:5000/Amortize/CalculateAmortizationTable", 
+    // "https://localhost:44353/Amortize/CalculateAmortizationTable"
+    const apiRoute = process.env.REACT_APP_API_URL ? 
+    `${process.env.REACT_APP_API_URL}/Amortize/CalculateAmortizationTable` : 
+    `https://localhost:5001/Amortize/CalculateAmortizationTable`
+
+    console.log(`apiRoute: ${apiRoute}`);
+
+    fetch(apiRoute, 
       {
         headers: {
           'Accept': 'application/json',
