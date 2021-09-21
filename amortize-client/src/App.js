@@ -24,7 +24,14 @@ function App() {
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useReducer(formReducer, {});
   
-  useEffect(() => {
+  // useEffect(() => {
+    
+
+  // }, [submitting]);
+
+  const handleSubmit = event => {
+    event.preventDefault();
+
     const apiRoute = process.env.REACT_APP_API_URL ? 
     `${process.env.REACT_APP_API_URL}/Amortize/CalculateAmortizationTable` : 
     `https://localhost:5001/Amortize/CalculateAmortizationTable`
@@ -57,10 +64,7 @@ function App() {
         console.log('ERROR: ' + error);
       }
     );
-  }, [submitting]);
 
-  const handleSubmit = event => {
-    event.preventDefault();
     setSubmitting(true);
   };
 
