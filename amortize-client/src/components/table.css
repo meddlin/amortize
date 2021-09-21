@@ -1,0 +1,18 @@
+.Table {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+thead > tr {
+    background-color: lightgray;
+}
+
+tbody > tr:nth-child(2n + 1) {
+    background-color: rgb(216, 233, 238);
+}
+
+tbody > tr:hover {
+    background-color: lightgrey;
+}
