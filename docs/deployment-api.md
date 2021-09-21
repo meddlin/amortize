@@ -58,5 +58,5 @@ After creating the `Dockerfile`, we can now build the image (test locally if you
 - Build image with: `docker build -t drushing/amortize-api`
 - Push to Heroku with... (In Heroku app dashboard, check "Deploy" tab, select "Container Registry")
   - `heroku container:login`
-  - `heroku container:push api --app=amortize-api`
-  - `heroku container:release api --app=amortize-api`
+  - `heroku container:push web --app=amortize-api`
+  - `heroku container:release web --app=amortize-api`
