@@ -1,4 +1,5 @@
 import './App.css';
+import Table from './components/table';
 import { useEffect, useState, useReducer } from 'react';
 
 const formReducer = (state, event) => {
@@ -116,38 +117,8 @@ function App() {
         <button type="submit" disabled={submitting}>Submit</button>
       </form>
 
-      <h2>Amortization Table</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Term</th>
-            <th>Monthly Payment</th>
-            <th>Principal</th>
-            <th>Interest</th>
-            <th>Remain. Pri.</th>
-            <th>Extra Payment</th>
-          </tr>
-        </thead>
-        <tbody>
-        {
-          amortize && amortize.length > 0 ? 
-          amortize.map( 
-            a => {
-              return (
-                  <tr key={a.term}>
-                    <td>{a.term}</td>
-                    <td>{a.monthlyPayment}</td>
-                    <td>{a.principal}</td>
-                    <td>{a.interest}</td>
-                    <td>{a.remainingPrincipal}</td>
-                    <td>{a.extraPayment}</td>
-                  </tr>
-              )
-            } 
-          ) : 'No data'
-        }
-        </tbody>
-      </table>
+      <Table tableData={amortize} />
+      
     </div>
   );
 }
