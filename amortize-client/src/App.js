@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { useEffect, useState, useReducer } from 'react';
 
@@ -13,8 +12,6 @@ const formReducer = (state, event) => {
     }
   }
 
-
-
   return {
     ...state,
     [event.name]: (event.name === 'interestRate' && event.value.length <= 3) ? event.value : parseFloat(event.value)
@@ -27,7 +24,6 @@ function App() {
   const [formData, setFormData] = useReducer(formReducer, {});
   
   useEffect(() => {
-    // "https://localhost:44353/Amortize/CalculateAmortizationTable"
     const apiRoute = process.env.REACT_APP_API_URL ? 
     `${process.env.REACT_APP_API_URL}/Amortize/CalculateAmortizationTable` : 
     `https://localhost:5001/Amortize/CalculateAmortizationTable`
@@ -41,15 +37,7 @@ function App() {
           'Content-Type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify(formData)
-        // body: JSON.stringify({
-        //   SalePrice: 530000,
-        //   DownPayment: 53000,
-        //   MortgageDuration: 30,
-        //   InterestRate: 0.03625,
-        //   ExtraMonthlyPayment: 200 + 500 + 900 + 1200
-        // })
-        
+        body: JSON.stringify(formData)        
       }
     ).then(
       response => {
@@ -73,14 +61,6 @@ function App() {
   const handleSubmit = event => {
     event.preventDefault();
     setSubmitting(true);
-
-    // setTimeout(() => {
-    //   setSubmitting(false);
-
-    //   setFormData({
-    //     reset: true
-    //   })
-    // }, 3000)
   };
 
   const handleChange = event => {
