@@ -23,8 +23,8 @@ namespace AmortizeTests
 
             bool negativeDetected = false;
 
-            List<AmortizedPart> payments = amo.FindAmortizedPayments();
-            foreach(AmortizedPart pmt in  payments)
+            List<AmortizationTerm> payments = amo.FindAmortizedPayments();
+            foreach(AmortizationTerm pmt in  payments)
             {
                 if (pmt.RemainingPrincipal < 0) negativeDetected = true;
             }
@@ -43,9 +43,58 @@ namespace AmortizeTests
             var amo = new Amortization(salePrice: 300000, downPayment: 60000, mortgageYears: 15, interestRate: 0.025);
             amo.ExtraPayment = 500.0;
 
-            List<AmortizedPart> payments = amo.FindAmortizedPayments();
+            List<AmortizationTerm> payments = amo.FindAmortizedPayments();
 
             Assert.True(payments.Count < amo.NumberOfPayments);
+        }
+
+        /// <summary>
+        /// Ensure the list of <c>AmortizedPart</c> is returned to the client in sequential
+        /// order of terms(t) = t => [1, 2, n, ..., n+1].
+        /// </summary>
+        [Fact]
+        public void FindAmortizedPayments__NormalCalculation__TermsShouldBeOrdered()
+        {
+
+        }
+
+
+
+        [Fact]
+        public void MortgageInsuranceRolloffTerm__NoRolloffIndicated__ReturnLastTerm()
+        {
+
+        }
+
+        [Fact]
+        public void MortgageInsuranceRolloffTerm__80Percent__ReturnSomeTerm()
+        {
+
+        }
+
+        [Fact]
+        public void MortgageInsuranceRolloffTerm__AutomaticCutoff__EndPmiAfterAutoYearMark()
+        {
+            /*
+             * Research if PMI rolls off a loan automatically at 10 or 20 years (or some
+             * other value).
+             * 
+             * Amortization table should show PMI has automatically rolled off, even if
+             * 80% (78%?) of loan value hasn't been paid.
+             */
+        }
+
+        [Fact]
+        public void MortgageInsuranceRolloffTerm__MakeSureTermsAreComparedInOrder()
+        {
+            /*
+             * In the MortgageInsuranceRolloffTerm() method, we loop over the amortization terms
+             * checking for the first term...where the remaining balance is less than the 
+             * rolloff value...
+             * 
+             * However, the AmortizationTerms are contained in a <c>List</c> which doesn't
+             * have a guaranteed order.
+             */
         }
     }
 }

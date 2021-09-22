@@ -8,7 +8,7 @@ namespace AmortizeAPI
 {
     public class Amortization
     {
-        public List<AmortizedPart> AmortizationTable { get; set; }
+        public List<AmortizationTerm> AmortizationTable { get; set; }
 
         public double SalePrice { get; set; }
         public double DownPayment { get; set; }
@@ -92,9 +92,9 @@ namespace AmortizeAPI
         /// Calculate the series of payments for the amortization table
         /// </summary>
         /// <returns></returns>
-        public List<AmortizedPart> FindAmortizedPayments()
+        public List<AmortizationTerm> FindAmortizedPayments()
         {
-            AmortizationTable = new List<AmortizedPart>();
+            AmortizationTable = new List<AmortizationTerm>();
             double remainingPrincipal = StartingPrincipal;
             int termCounter = 1;
 
@@ -110,7 +110,7 @@ namespace AmortizeAPI
                 // break loop if balance is paid off sooner
                 if (remainingPrincipal < 0) break;
 
-                AmortizationTable.Add(new AmortizedPart() { 
+                AmortizationTable.Add(new AmortizationTerm() { 
                     Term = termCounter, 
                     MonthlyPayment = monthlyPayment, 
                     Principal = p, 
@@ -193,9 +193,31 @@ namespace AmortizeAPI
         /// Calculate the principal amount when mortgage insurance will roll off.
         /// </summary>
         /// <returns></returns>
-        public double MortgageInsuranceRolloffAmount()
+        public double MortgageInsuranceRolloffAmount(double pmiPercentage)
         {
-            return StartingPrincipal * 0.78;
+            return StartingPrincipal * pmiPercentage;
+        }
+
+        public AmortizationTerm MortgageInsuranceRolloffTerm(CalculationRequest request)
+        {
+            var termToReach = new AmortizationTerm();
+
+            // calculate pmi rolloff
+            double rolloffAmount = MortgageInsuranceRolloffAmount(request.MortgageInsuranceCancelPercent);
+
+            // run amortization table
+            List<AmortizationTerm> terms = FindAmortizedPayments();
+
+            // compare pmi rolloff amount to remaining balance of each term
+            for (var i = 0; i < terms.Count; i++)
+            {
+                if (terms[i].RemainingPrincipal <= rolloffAmount)
+                    termToReach = terms[i];
+
+                break;
+            }
+
+            return termToReach;
         }
     }
 }

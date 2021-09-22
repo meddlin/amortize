@@ -17,5 +17,6 @@ namespace AmortizeAPI.Models
         public double MortgageInsurance { get; set; } // = 353.78;
 
         public double ExtraMonthlyPayment { get; set; } // = 500.0;
+        public double MortgageInsuranceCancelPercent { get; set; }
     }
 }

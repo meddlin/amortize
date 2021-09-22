@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AmortizeAPI.Models
 {
-    public class AmortizedPart
+    public class AmortizationTerm
     {
         public int Term { get; set; }
         public double MonthlyPayment { get; set; }
