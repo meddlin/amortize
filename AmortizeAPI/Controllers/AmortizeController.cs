@@ -48,5 +48,12 @@ namespace AmortizeAPI.Controllers
             var amo = new Amortization(request);
             return amo.MortgageInsuranceRolloffAmount(request.MortgageInsuranceCancelPercent);
         }
+
+        [HttpPost]
+        public AmortizationTerm MortgageInsuranceRolloffTerm([FromBody] CalculationRequest request)
+        {
+            var amo = new Amortization(request);
+            return amo.MortgageInsuranceRolloffTerm(request);
+        }
     }
 }

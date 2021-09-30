@@ -198,6 +198,9 @@ namespace AmortizeAPI
             return StartingPrincipal * pmiPercentage;
         }
 
+        /// <summary>
+        /// Find the specific term that PMI rolls off of the loan.
+        /// </summary>
         public AmortizationTerm MortgageInsuranceRolloffTerm(CalculationRequest request)
         {
             var termToReach = new AmortizationTerm();
@@ -212,9 +215,10 @@ namespace AmortizeAPI
             for (var i = 0; i < terms.Count; i++)
             {
                 if (terms[i].RemainingPrincipal <= rolloffAmount)
+                {
                     termToReach = terms[i];
-
-                break;
+                    break;
+                }
             }
 
             return termToReach;
