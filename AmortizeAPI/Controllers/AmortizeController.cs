@@ -15,7 +15,7 @@ namespace AmortizeAPI.Controllers
         // https://localhost:5001/swagger/index.html
 
         [HttpPost]
-        public List<AmortizedPart> CalculateAmortizationTable([FromBody] CalculationRequest request)
+        public List<AmortizationTerm> CalculateAmortizationTable([FromBody] CalculationRequest request)
         {
             var amo = new Amortization(request);
             var results = amo.FindAmortizedPayments();
@@ -46,7 +46,14 @@ namespace AmortizeAPI.Controllers
         public double MortgageInsuranceRolloff([FromBody] CalculationRequest request)
         {
             var amo = new Amortization(request);
-            return amo.MortgageInsuranceRolloffAmount();
+            return amo.MortgageInsuranceRolloffAmount(request.MortgageInsuranceCancelPercent);
+        }
+
+        [HttpPost]
+        public AmortizationTerm MortgageInsuranceRolloffTerm([FromBody] CalculationRequest request)
+        {
+            var amo = new Amortization(request);
+            return amo.MortgageInsuranceRolloffTerm(request);
         }
     }
 }

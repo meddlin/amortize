@@ -1,5 +1,6 @@
 import './App.css';
 import Table from './components/table';
+import Rolloff from './components/rolloff';
 import { useEffect, useState, useReducer } from 'react';
 
 const formReducer = (state, event) => {
@@ -23,11 +24,6 @@ function App() {
   const [amortize, setAmortize] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useReducer(formReducer, {});
-  
-  // useEffect(() => {
-    
-
-  // }, [submitting]);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -120,6 +116,8 @@ function App() {
 
         <button type="submit" disabled={submitting}>Submit</button>
       </form>
+
+      <Rolloff />
 
       <Table tableData={amortize} />
       
